@@ -1,0 +1,7 @@
+-- CREATE DATABASE wordpress;
+CREATE DATABASE IF NOT EXISTS wordpress;
+SELECT User, Host FROM mysql.user;
+DROP USER IF EXISTS 'wpuser'@'%';
+CREATE USER 'wpuser'@'%' IDENTIFIED by 'test';
+GRANT ALL PRIVILEGES ON *.* TO 'wpuser'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;

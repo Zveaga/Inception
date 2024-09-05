@@ -2,12 +2,42 @@ services:
   nginx:
     build: requirements/nginx/.
     container_name: nginx
+    depends_on:
+      - wordpress
+      - mariadb
     ports:
       - "80:80"
     volumes:
       - ./web:/var/www/html
+    networks:
+      - inception
   wordpress:
     build: requirements/wordpress/.
     container_name: wp-php
+    depends_on:
+      - mariadb
+    # environment:
+    #   WORDPRESS_DB_HOST: mariadb
+    #   WORDPRESS_DB_NAME: wordpress
+    #   WORDPRESS_DB_USER: wpuser
+    #   WORDPRESS_DB_PASSWORD: test
     volumes:
       - ./web:/var/www/html
+    networks:
+      - inception
+  mariadb:
+    build: requirements/mariadb/.
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+    volumes:
+      - ./database:/var/lib/mysql
+    networks:
+      - inception
+networks:
+  inception:
+    driver: bridge
+  
