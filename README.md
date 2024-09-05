@@ -7,6 +7,6 @@ The goal of the project is to set up a small infrastructure composed of differen
 - A Docker container that contains WordPress + php-fpm (it must be installed and
   configured) only without nginx
 - A Docker container that contains MariaDB only without nginx
-- A volume that contains your WordPress database
-- A second volume that contains your WordPress website files
-- A docker-network that establishes the connection between your containers
+- A volume that contains the WordPress database
+- A second volume that contains the WordPress website files
+- A docker-network that establishes the connection between containers
