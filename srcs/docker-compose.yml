@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3'
 
 services:
   nginx:
@@ -9,14 +9,18 @@ services:
     networks:
       - inception
     volumes:
-      - ./web:/var/www/html
+      - ./wordpress:/var/www/html
+    depends_on:
+      - wordpress
   wordpress:
     container_name: wp-php
     build: requirements/wordpress/
     networks:
       - inception
     volumes:
-      - ./web:/var/www/html
+      - ./wordpress:/var/www/html
+    depends_on:
+      - mariadb
   mariadb: 
     container_name: mariadb
     build: requirements/mariadb/
@@ -24,6 +28,20 @@ services:
       - "3306:3306"
     networks:
       - inception
+    volumes:
+      - ./mariadb:/var/lib/mysql
 networks:
   inception:
     driver: bridge
+
+volumes:
+  mariadb:
+    driver_opts:
+      type: none
+      device: /home/coxer/data/mariadb
+      o: bind
+  wordpress:
+    driver_opts:
+      type: none
+      device: /home/coxer/data/wordpress
+      o: bind

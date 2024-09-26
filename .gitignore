@@ -1,2 +1,2 @@
-srcs/web/
-srcs/database/
+srcs/wordpress/
+srcs/mariadb/
