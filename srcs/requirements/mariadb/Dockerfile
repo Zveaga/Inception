@@ -6,7 +6,13 @@ RUN apt update && apt upgrade -y && apt install -y mariadb-server
 
 RUN chown -R mysql:mysql /run/mysqld
 
-COPY 50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+RUN chmod 777 /run/mysqld
+
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+
+COPY ./tools/initMariaDb.sh /initMariaDb.sh
+
+RUN chmod +x /initMariaDb.sh
 
 # COPY init.sql /etc/mysql/init.sql
 
@@ -14,7 +20,7 @@ COPY 50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 # RUN mkdir /run/mysqld && chmod 755 script.sh
 
-# EXPOSE 3306
+EXPOSE 3306
 
-# CMD ["./script.sh"]
-CMD ["mysqld_safe"]
+CMD ["/initMariaDb.sh"]
+# CMD ["mysqld_safe"]
