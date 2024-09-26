@@ -1,13 +1,20 @@
 FROM debian:latest
 
+RUN mkdir -p /run/mysqld
+
 RUN apt update && apt upgrade -y && apt install -y mariadb-server
 
-COPY 50-server.cnf /etc/mysql/mariadb.conf.d/.
+RUN chown -R mysql:mysql /run/mysqld
 
-COPY init.sql /etc/mysql/init.sql
+COPY 50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
-COPY script.sh .
+# COPY init.sql /etc/mysql/init.sql
 
-RUN mkdir /run/mysqld && chmod 755 script.sh
+# COPY script.sh .
 
-CMD ["./script.sh"]
+# RUN mkdir /run/mysqld && chmod 755 script.sh
+
+# EXPOSE 3306
+
+# CMD ["./script.sh"]
+CMD ["mysqld_safe"]

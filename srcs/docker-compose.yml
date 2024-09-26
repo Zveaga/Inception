@@ -17,6 +17,11 @@ services:
       - inception
     volumes:
       - ./web:/var/www/html
+  mariadb: 
+    container_name: mariadb
+    build: requirements/mariadb/
+    networks:
+      - inception
 networks:
   inception:
     driver: bridge
