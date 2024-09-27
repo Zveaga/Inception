@@ -12,14 +12,6 @@ cd /var/lib/mysql
 		echo "GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'%' IDENTIFIED BY '$DB_USER_PASSWORD';" >> db.sql
 		echo "FLUSH PRIVILEGES;" >> db.sql
 	# fi
-
-#	mariadb-install-db \
-#	--user=mysql \
-#	--datadir=/var/lib/mysql \
-#	--skip-test-db \
-#	--skip-name-resolve \
-#	--auth-root-authentication-method=normal
-
 	sleep 2
 
 	service mariadb start
