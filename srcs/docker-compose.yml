@@ -9,16 +9,16 @@ services:
     networks:
       - inception
     volumes:
-      - ./wordpress:/var/www/html
+      - wordpress:/var/www/html
     depends_on:
       - wordpress
   wordpress:
-    container_name: wp-php
+    container_name: wordpress
     build: requirements/wordpress/
     networks:
       - inception
     volumes:
-      - ./wordpress:/var/www/html
+      - wordpress:/var/www/html
     depends_on:
       - mariadb
   mariadb: 
@@ -29,7 +29,7 @@ services:
     networks:
       - inception
     volumes:
-      - ./mariadb:/var/lib/mysql
+      - mariadb:/var/lib/mysql
 networks:
   inception:
     driver: bridge
@@ -38,10 +38,10 @@ volumes:
   mariadb:
     driver_opts:
       type: none
-      device: /home/coxer/data/mariadb
+      device: /home/coxer/Documents/Docker/volumes/mariadb_inception
       o: bind
   wordpress:
     driver_opts:
       type: none
-      device: /home/coxer/data/wordpress
+      device: /home/coxer/Documents/Docker/volumes/wordpress_inception
       o: bind

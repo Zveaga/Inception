@@ -60,7 +60,8 @@ server {
 		# fastcgi_pass unix:/run/php/php7.4-fpm.sock;     #-> modified
 		# With php-cgi (or other tcp sockets):
 		# fastcgi_pass 127.0.0.1:9000;                  #-> modified
-		fastcgi_pass wp-php:9000;                       #-> modified
+		# fastcgi_pass wp-php:9000;                       #-> modified
+		fastcgi_pass wordpress:9000;                       #-> modified
 	}
 
 	# deny access to .htaccess files, if Apache's document root
