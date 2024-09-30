@@ -62,6 +62,9 @@ server {
 		# fastcgi_pass 127.0.0.1:9000;                  #-> modified
 		# fastcgi_pass wp-php:9000;                       #-> modified
 		fastcgi_pass wordpress:9000;                       #-> modified
+		include fastcgi_params;
+		# fastcgi_index index.php;
+		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 	}
 
 	# deny access to .htaccess files, if Apache's document root

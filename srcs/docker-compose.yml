@@ -4,6 +4,8 @@ services:
   nginx:
     container_name: nginx
     build: requirements/nginx/
+    env_file:
+      - ./.env
     ports:
       - "80:80"
     networks:
@@ -12,9 +14,12 @@ services:
       - wordpress:/var/www/html
     depends_on:
       - wordpress
+      - mariadb
   wordpress:
     container_name: wordpress
     build: requirements/wordpress/
+    env_file:
+      - ./.env
     networks:
       - inception
     volumes:
@@ -24,6 +29,8 @@ services:
   mariadb: 
     container_name: mariadb
     build: requirements/mariadb/
+    env_file:
+      - ./.env
     ports:
       - "3306:3306"
     networks:
