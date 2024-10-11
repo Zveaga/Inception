@@ -3,40 +3,64 @@ version: '3'
 services:
   nginx:
     container_name: nginx
-    build: requirements/nginx/
+    build:
+      context: ./requirements/nginx/
+      args:
+        DOMAIN_NAME: ${DOMAIN_NAME}
     env_file:
       - ./.env
+    expose:
+      - 443
+      - 9000
     ports:
-      - "80:80"
+      - "443:443"
     networks:
       - inception
     volumes:
       - wordpress:/var/www/html
     depends_on:
       - wordpress
-      - mariadb
+      # - mariadb
+    restart: always
+
   wordpress:
     container_name: wordpress
-    build: requirements/wordpress/
+    build:
+      context: ./requirements/wordpress/
+      args:
+        DOMAIN_NAME: ${DOMAIN_NAME}
     env_file:
       - ./.env
+    expose:
+      - 3306
+      - 9000
     networks:
       - inception
     volumes:
       - wordpress:/var/www/html
     depends_on:
       - mariadb
+    restart: always
+
   mariadb: 
     container_name: mariadb
-    build: requirements/mariadb/
+    build:
+      context: ./requirements/mariadb
     env_file:
       - ./.env
+    expose:
+      - 3306
     ports:
       - "3306:3306"
     networks:
       - inception
     volumes:
       - mariadb:/var/lib/mysql
+    restart: always
+
+# networks:
+#   inception:
+#     external: false
 networks:
   inception:
     driver: bridge

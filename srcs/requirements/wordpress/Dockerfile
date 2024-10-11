@@ -1,30 +1,51 @@
 FROM debian:latest
 
+EXPOSE	9000
+EXPOSE	3306
+
+ARG DOMAIN_NAME
+ENV DOMAIN_NAME=$DOMAIN_NAME
+
 RUN apt update && apt upgrade -y && apt install -y \
 php-fpm \
 php-mysqli \
 curl \
 wget
 
+# RUN apt update && \
+#     apt upgrade -y && \
+#     apt install -y mariadb-client \
+#     php-cgi \
+#     php-common \
+#     php-fpm \
+#     php-pear \
+#     php-mbstring \
+#     php-zip \
+#     php-net-socket \
+#     php-gd \
+#     php-xml-util \
+#     php-mysql \
+#     php-bcmath \
+#     wget \
+#     netcat
+
 RUN	wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
 && chmod +x wp-cli.phar \
 && mv wp-cli.phar /usr/local/bin/wp
 
-COPY ./conf/www.conf /etc/php/8.2/fpm/pool.d/
 
+RUN mkdir -p /var/www/html/$DOMAIN_NAME
+
+RUN mkdir -p /run/php
 # RUN	mkdir /run/php
+
+COPY ./conf/www.conf /etc/php/8.2/fpm/pool.d/
 
 COPY ./tools/initWp.sh /usr/local/bin/
 
 RUN	chmod +x /usr/local/bin/initWp.sh
 
-EXPOSE	9000
-
 CMD ["/usr/local/bin/initWp.sh"]
-
-
-
-
 
 # RUN apt update && apt upgrade -y && apt install -y php-fpm php-mysqli curl
 # COPY script.sh .

@@ -1,5 +1,7 @@
 FROM debian:latest
 
+EXPOSE 3306
+
 RUN mkdir -p /run/mysqld
 
 RUN apt update && apt upgrade -y && apt install -y mariadb-server
@@ -19,8 +21,6 @@ RUN chmod +x /initMariaDb.sh
 # COPY script.sh .
 
 # RUN mkdir /run/mysqld && chmod 755 script.sh
-
-EXPOSE 3306
 
 CMD ["/initMariaDb.sh"]
 # CMD ["mysqld_safe"]
