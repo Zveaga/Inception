@@ -1,4 +1,4 @@
-#!/bin/bash
+z#!/bin/bash
 
 cd /var/lib/mysql
 

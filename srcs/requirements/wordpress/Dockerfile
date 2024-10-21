@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:bullseye
 
 EXPOSE	9000
 EXPOSE	3306
@@ -6,28 +6,32 @@ EXPOSE	3306
 ARG DOMAIN_NAME
 ENV DOMAIN_NAME=$DOMAIN_NAME
 
-RUN apt update && apt upgrade -y && apt install -y \
-php-fpm \
-php-mysqli \
-curl \
-wget
+# RUN apt update && apt upgrade -y && apt install -y \
+# php-fpm \
+# php-mysqli \
+# curl \
+# wget
 
-# RUN apt update && \
-#     apt upgrade -y && \
-#     apt install -y mariadb-client \
-#     php-cgi \
-#     php-common \
-#     php-fpm \
-#     php-pear \
-#     php-mbstring \
-#     php-zip \
-#     php-net-socket \
-#     php-gd \
-#     php-xml-util \
-#     php-mysql \
-#     php-bcmath \
-#     wget \
-#     netcat
+# RUN apt install -y php8.2 php8.2-common php8.2-fpm php8.2-mysql php8.2-cgi php8.2-gd php8.2-xml mariadb-client wget curl
+
+RUN apt update && \
+    apt upgrade -y && \
+    apt install -y \
+	mariadb-client \
+	curl \
+    php-cgi \
+    php-common \
+    php-fpm \
+    php-pear \
+    php-mbstring \
+    php-zip \
+    php-net-socket \
+    php-gd \
+    php-xml-util \
+    php-mysql \
+    php-bcmath \
+    wget \
+    netcat
 
 RUN	wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
 && chmod +x wp-cli.phar \
@@ -45,7 +49,9 @@ COPY ./tools/initWp.sh /usr/local/bin/
 
 RUN	chmod +x /usr/local/bin/initWp.sh
 
-CMD ["/usr/local/bin/initWp.sh"]
+ENTRYPOINT [ "/usr/local/bin/initWp.sh" ]
+
+CMD [ "php-fpm8.2", "-F" ]
 
 # RUN apt update && apt upgrade -y && apt install -y php-fpm php-mysqli curl
 # COPY script.sh .

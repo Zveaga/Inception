@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:bullseye
 
 EXPOSE 3306
 
@@ -22,5 +22,7 @@ RUN chmod +x /initMariaDb.sh
 
 # RUN mkdir /run/mysqld && chmod 755 script.sh
 
-CMD ["/initMariaDb.sh"]
+ENTRYPOINT [ "/initMariaDb.sh" ]
+
+CMD ["mysqld"]
 # CMD ["mysqld_safe"]
