@@ -20,4 +20,4 @@ if [ ! -d "/var/lib/mysql/$DB_NAME" ]; then
 fi
 
 # Start mysqld_safe as the main process
-exec mysqld
+exec mysqld_safe

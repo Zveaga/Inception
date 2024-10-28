@@ -1,98 +1,53 @@
-FROM debian:bullseye
+FROM debian:bookworm
 
-EXPOSE	9000
-EXPOSE	3306
+# Expose necessary ports
+EXPOSE 9000
+EXPOSE 3306
 
+# Define domain name as build argument and environment variable
 ARG DOMAIN_NAME
 ENV DOMAIN_NAME=$DOMAIN_NAME
 
-# RUN apt update && apt upgrade -y && apt install -y \
-# php-fpm \
-# php-mysqli \
-# curl \
-# wget
-
-# RUN apt install -y php8.2 php8.2-common php8.2-fpm php8.2-mysql php8.2-cgi php8.2-gd php8.2-xml mariadb-client wget curl
-
+# Update package lists, upgrade installed packages, and install required packages
 RUN apt update && \
     apt upgrade -y && \
     apt install -y \
-	mariadb-client \
-	curl \
-    php-cgi \
-    php-common \
-    php-fpm \
-    php-pear \
-    php-mbstring \
-    php-zip \
-    php-net-socket \
-    php-gd \
-    php-xml-util \
-    php-mysql \
-    php-bcmath \
-    wget \
-    netcat
+        mariadb-client \
+        curl \
+        php8.2 \
+        php8.2-common \
+        php8.2-fpm \
+        php8.2-mysql \
+        php8.2-mbstring \
+        php8.2-zip \
+        php8.2-gd \
+        php8.2-xml \
+        php8.2-bcmath \
+        wget \
+		ncat
 
-RUN	wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
-&& chmod +x wp-cli.phar \
-&& mv wp-cli.phar /usr/local/bin/wp
+# Download wp-cli.phar, make it executable, and move it to the local bin
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    chmod +x wp-cli.phar && \
+    mv wp-cli.phar /usr/local/bin/wp
 
-
+# Create the necessary directory for the WordPress site
 RUN mkdir -p /var/www/html/$DOMAIN_NAME
 
+# Create the PHP run directory if it doesn't exist
 RUN mkdir -p /run/php
-# RUN	mkdir /run/php
 
-COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/
+# Copy PHP configuration for the FPM pool
+COPY ./conf/www.conf /etc/php/8.2/fpm/pool.d/
 
+# Copy the WordPress initialization script
 COPY ./tools/initWp.sh /usr/local/bin/
 
-RUN	chmod +x /usr/local/bin/initWp.sh
+# Ensure the init script is executable
+RUN chmod +x /usr/local/bin/initWp.sh
 
-ENTRYPOINT [ "/usr/local/bin/initWp.sh" ]
+# Set the entrypoint to the initialization script
+ENTRYPOINT ["/usr/local/bin/initWp.sh"]
 
-CMD [ "php-fpm7.4", "-F" ]
-
-# RUN apt update && apt upgrade -y && apt install -y php-fpm php-mysqli curl
-# COPY script.sh .
-# RUN chmod 755 script.sh
-# CMD ["./script.sh"]
-# CMD [ "php-fpm8.2", "-F" ]
-# EXPOSE 9000
-# CMD ["php-fpm8.2", "-F"]
-
-
-
-
-
-
-
-
-# FROM	debian:bullseye
-
-# RUN	apt-get update && apt-get -y install \
-# 	wget \
-# 	curl \
-# 	php7.4 \
-# 	php7.4-fpm \
-# 	php7.4-mysql \
-# 	php7.4-pdo \
-# 	php7.4-gd \
-# 	php7.4-mbstring \
-# 	&& rm -rf /var/lib/apt/lists/*
-
-# RUN	wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
-# 	&& chmod +x wp-cli.phar \
-# 	&& mv wp-cli.phar /usr/local/bin/wp
-
-# COPY	./requirements/wordpress/conf/www.conf /etc/php/7.4/fpm/pool.d
-
-# RUN	mkdir /run/php
-
-# COPY	./requirements/wordpress/tools/wordpress_setup.sh /usr/local/bin/
-
-# RUN	chmod +x /usr/local/bin/wordpress_setup.sh
-
-# EXPOSE	9000
-
-# CMD ["/usr/local/bin/wordpress_setup.sh"]
+# Start PHP-FPM when the container is run
+CMD ["php-fpm8.2", "-F"]
