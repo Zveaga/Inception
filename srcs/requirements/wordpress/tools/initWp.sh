@@ -39,6 +39,8 @@ if [ ! -e /var/www/html/$DOMAIN_NAME/.wordpress_setup_done ]; then
     touch .wordpress_setup_done
 fi
 
+echo "Starting Wordpress..."
+
 exec "$@"
 
 

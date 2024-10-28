@@ -43,7 +43,7 @@ RUN mkdir -p /var/www/html/$DOMAIN_NAME
 RUN mkdir -p /run/php
 # RUN	mkdir /run/php
 
-COPY ./conf/www.conf /etc/php/8.2/fpm/pool.d/
+COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/
 
 COPY ./tools/initWp.sh /usr/local/bin/
 
@@ -51,7 +51,7 @@ RUN	chmod +x /usr/local/bin/initWp.sh
 
 ENTRYPOINT [ "/usr/local/bin/initWp.sh" ]
 
-CMD [ "php-fpm8.2", "-F" ]
+CMD [ "php-fpm7.4", "-F" ]
 
 # RUN apt update && apt upgrade -y && apt install -y php-fpm php-mysqli curl
 # COPY script.sh .

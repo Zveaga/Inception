@@ -1,5 +1,7 @@
 services:
-  mariadb: 
+  mariadb:
+    # user: "mysql"
+    # image: mariadb:10.11.6 
     container_name: mariadb
     build:
       context: ./requirements/mariadb

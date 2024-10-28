@@ -1,28 +1,16 @@
-FROM debian:bullseye
+FROM debian:latest
 
 EXPOSE 3306
 
-RUN mkdir -p /run/mysqld
+RUN apt update && apt install -y mariadb-server
 
-RUN apt update && apt upgrade -y && apt install -y mariadb-server
-
-RUN chown -R mysql:mysql /run/mysqld
-
-RUN chmod 777 /run/mysqld
+RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
+RUN mkdir -p /var/lib/mysql && chown -R mysql:mysql /var/lib/mysql
 
 COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
-
 COPY ./tools/initMariaDb.sh /initMariaDb.sh
+COPY ./tools/entrypoint.sh /entrypoint.sh
 
-RUN chmod +x /initMariaDb.sh
+RUN chmod +x /initMariaDb.sh /entrypoint.sh
 
-# COPY init.sql /etc/mysql/init.sql
-
-# COPY script.sh .
-
-# RUN mkdir /run/mysqld && chmod 755 script.sh
-
-ENTRYPOINT [ "/initMariaDb.sh" ]
-
-CMD ["mysqld"]
-# CMD ["mysqld_safe"]
+ENTRYPOINT ["/entrypoint.sh"]
