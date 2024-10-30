@@ -1,18 +1,18 @@
-COMPOSE=docker compose -f srcs/docker-compose.yml
+COMPOSE = docker compose -f srcs/docker-compose.yml
 
-VOL_WP_PATH = ${HOME}/data/wordpress
-VOL_DB_PATH = ${HOME}/data/mariadb
+WP_DATA_VOL = ${HOME}/data/wordpress
+DB_DATA_VOL = ${HOME}/data/mariadb
 
 all: build
 
 run:
-	@mkdir -p $(VOL_WP_PATH)
-	@mkdir -p $(VOL_DB_PATH)
+	@mkdir -p $(WP_DATA_VOL)
+	@mkdir -p $(DB_DATA_VOL)
 	@${COMPOSE} up --build
 
 build:
-	@mkdir -p $(VOL_WP_PATH)
-	@mkdir -p $(VOL_DB_PATH)
+	@mkdir -p $(WP_DATA_VOL)
+	@mkdir -p $(DB_DATA_VOL)
 	@${COMPOSE} build --no-cache --pull
 
 run_b: build run
@@ -24,11 +24,11 @@ clean:
 	@${COMPOSE} down --volumes --rmi all --remove-orphans
 
 fclean: clean
-	@echo $(VOL_DB_PATH) $(VOL_WP_PATH)
+	@echo $(DB_DATA_VOL) $(WP_DATA_VOL)
 	@docker system prune --all
 	@docker builder prune --all
-	@sudo rm -rf $(VOL_DB_PATH)
-	@sudo rm -rf $(VOL_WP_PATH)
+	@sudo rm -rf $(DB_DATA_VOL)
+	@sudo rm -rf $(WP_DATA_VOL)
 
 re: fclean run
 

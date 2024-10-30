@@ -13,4 +13,4 @@ COPY ./tools/entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /initMariaDb.sh /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/initMariaDb.sh"]

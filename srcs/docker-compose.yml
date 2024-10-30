@@ -58,7 +58,7 @@ services:
       - wordpress:/var/www/html
     depends_on:
       - wordpress
-      - mariadb
+      # - mariadb
     restart: always
 
 volumes:
