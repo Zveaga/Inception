@@ -9,14 +9,22 @@ if [ ! -d "/var/lib/mysql/$DB_NAME" ]; then
         echo "CREATE DATABASE IF NOT EXISTS $DB_NAME;" > db.sql
         echo "CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED BY '$DB_USER_PASSWORD';" >> db.sql
         echo "GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'%' IDENTIFIED BY '$DB_USER_PASSWORD';" >> db.sql
-        echo "FLUSH PRIVILEGES;" >> db.sql
+        echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';" >> db.sql
+		echo "FLUSH PRIVILEGES;" >> db.sql
     fi
 
     # Start MariaDB in the background
     service mariadb start
     sleep 2
-    # Run the SQL commands
+
+	# Set the root password (this ensures that the root user will require a password)
+    # mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';" || { echo "Failed to set root password"; exit 1; }
+
+    # # Run the SQL commands
     mysql < db.sql || { echo "Failed to initialize database"; exit 1; }
+
+	# Run the SQL commands to create the database and user
+    # mysql -u root -p"$MYSQL_ROOT_PASSWORD" < db.sql || { echo "Failed to initialize database"; exit 1; }
 fi
 
 # Start mysqld_safe as the main process
