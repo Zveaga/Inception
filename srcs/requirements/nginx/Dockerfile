@@ -18,10 +18,13 @@ RUN mkdir -p /etc/nginx/ssl
 # 				-keyout /etc/ssl/certs/raanghel.42.fr.key \
 # 				-subj "/C=NL/ST=North-Holland/L=Amsterdam/O=Codam/OU=raanghel/CN=raanghel/"
 
-RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/ssl_cert.key -out /etc/nginx/ssl/ssl_cert.crt -subj "/C=NL/ST=Noord-Holland/L=Amsterdam/O=42/OU=Codam/CN=localhost"
+RUN	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/ssl_cert.key -out /etc/nginx/ssl/ssl_cert.crt -subj "/C=NL/ST=Noord-Holland/L=Amsterdam/O=42/OU=Codam/CN=raanghel.42.fr"
+
+
+# RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/ssl_cert.key -out /etc/nginx/ssl/ssl_cert.crt -subj "/C=NL/ST=Noord-Holland/L=Amsterdam/O=42/OU=Codam/CN=raanghel"
 
 
 # COPY default /etc/nginx/sites-available/
-COPY default /etc/nginx/conf.d/default.conf
+COPY default.conf /etc/nginx/conf.d/default.conf
 
 CMD ["nginx", "-g", "daemon off;"]

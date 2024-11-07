@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Starting WordPress setup..."
-
+echo "Domain Name: $DOMAIN_NAME"
 # if [ ! -f "/usr/local/bin/wp" ]; then
 # if [ ! -f "/var/www/html/$DOMAIN_NAME/wp-config.php" ]; then
 if [ ! -f "/var/www/html/$DOMAIN_NAME/.wp_setup_done" ]; then

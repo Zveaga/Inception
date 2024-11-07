@@ -20,6 +20,7 @@ skip-networking         = false
 #pid-file                = /run/mysqld/mysqld.pid
 basedir                 = /usr
 datadir                 = /var/lib/mysql
+socket                  = /run/mysqld/mysqld.sock
 tmpdir                  = /tmp
 bind-address            = 0.0.0.0
 
